@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bonss.system.mapper.ModelConsumableTypeMapper">
+
+    <insert id="batchInsert" parameterType="map">
+        INSERT INTO model_consumable_type (model_id, consumable_type_id)
+        VALUES
+        <foreach collection="consumableIds" item="consumableId" separator=",">
+            (#{id}, #{consumableId})
+        </foreach>
+    </insert>
+
+</mapper>

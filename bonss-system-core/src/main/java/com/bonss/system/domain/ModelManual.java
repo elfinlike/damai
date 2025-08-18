@@ -1,0 +1,36 @@
+package com.bonss.system.domain;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@TableName(value = "model_manual")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ModelManual {
+
+    /**
+     * id
+     */
+    @TableId(type = IdType.AUTO)
+    private Long id;
+    /**
+     * 说明书id
+     */
+    private Long manualId;
+
+    /**
+     * 型号id
+     */
+    private Long modelId;
+
+    /**
+     * 是否删除
+     */
+    private String delFlag;
+
+}

@@ -75,11 +75,11 @@ public class ManualServiceImpl implements IManualService {
             throw new ServiceException("上传失败" + e.getMessage());
         }
         LocalDateTime now = LocalDateTime.now();
-        String userId = SecurityUtils.getLoginUser().getUserId().toString();
+        String userName = SecurityUtils.getAdminUserName();
         //对集合每个元素设置提交时间和提交者
         list.stream().forEach(manual -> {
             manual.setUploadTime(now);
-            manual.setUploadBy(userId);
+            manual.setUploadBy(userName);
             manual.setDelFlag("0");
         });
         //通过判空就进行批量插入
@@ -97,19 +97,15 @@ public class ManualServiceImpl implements IManualService {
      *
      * @param productId 产品id
      * @param query     分页
-     * @param manual    说明书实体
      * @return 返回分页结果
      */
     @Override
-    public TableDataInfo listPage(Integer productId, PageQuery query, Manual manual) {
-        Page<Manual> page = query.build();
+    public TableDataInfo listPage(Integer productId, PageQuery query) {
         List<Long> manualIds = manualMapper.selectByProductId(productId);
         LambdaQueryWrapper<Manual> wrapper = new LambdaQueryWrapper<>();
         wrapper.in(!CollectionUtils.isEmpty(manualIds), Manual::getId, manualIds)
-                .eq(manual.getFileName() != null, Manual::getFileName, manual.getFileName())
-                .eq(manual.getNewFileName() != null, Manual::getNewFileName, manual.getNewFileName())
-                .eq(manual.getOriginalName() != null, Manual::getOriginalName, manual.getOriginalName());
-        Page<Manual> manualPage = manualMapper.selectPage(page, wrapper);
+                .like(query.getSearchValue() != null, Manual::getOriginalName, query.getSearchValue());
+        Page<Manual> manualPage = manualMapper.selectPage(query.build(), wrapper);
         return new TableDataInfo(manualPage.getRecords(), manualPage.getTotal());
     }
 

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/system/product/{productId}")
+@RequestMapping("/app/product/{productId}")
 @Slf4j
 public class ConsumableController {
 

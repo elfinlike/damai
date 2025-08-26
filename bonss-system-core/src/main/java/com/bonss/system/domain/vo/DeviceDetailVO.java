@@ -15,6 +15,8 @@ public class DeviceDetailVO {
     private Long deviceId;
     //设备名称
     private String deviceName;
+    //产品ID
+    private Long productId;
     //产品名称
     private String productName;
     //产品编码

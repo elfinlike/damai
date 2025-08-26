@@ -28,7 +28,7 @@ import java.util.Map;
  * @author hzx
  */
 @RestController
-@RequestMapping("/system/user/profile")
+@RequestMapping("/system/admin/profile")
 public class SysProfileController extends BaseController
 {
 
@@ -46,10 +46,9 @@ public class SysProfileController extends BaseController
     {
         LoginAdmin loginUser = getLoginAdmin();
         SysAdmin user = loginUser.getUser();
-        AjaxResult ajax = AjaxResult.success(user);
-        ajax.put("roleGroup", adminService.selectUserRoleGroup(loginUser.getUsername()));
-        ajax.put("postGroup", adminService.selectUserPostGroup(loginUser.getUsername()));
-        return ajax;
+//        ajax.put("roleGroup", adminService.selectUserRoleGroup(loginUser.getUsername()));
+//        ajax.put("postGroup", adminService.selectUserPostGroup(loginUser.getUsername()));
+        return AjaxResult.success(user);
     }
 
     /**

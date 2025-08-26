@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/system/tutorial/{productId}")
+@RequestMapping("/app/tutorial/{productId}")
 public class TutorialController {
 
     @Autowired
@@ -27,6 +27,7 @@ public class TutorialController {
      * @return 返回分页查询结果
      */
     @GetMapping
+    @Log(title = "查询图文教程",businessType = BusinessType.GET,operatorType = OperatorType.MANAGE)
     public TableDataInfo list(@PathVariable Integer productId,
                               PageQuery pageQuery){
 
@@ -42,6 +43,7 @@ public class TutorialController {
      * @return 返回具体结果
      */
     @GetMapping("/{id}")
+    @Log(title = "查询图文教程",businessType = BusinessType.GET,operatorType = OperatorType.MANAGE)
     public AjaxResult detail(@PathVariable Long productId, @PathVariable Long id){
         return AjaxResult.success(tutorialService.getDetail(productId,id));
     }

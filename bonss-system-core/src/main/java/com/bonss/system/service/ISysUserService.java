@@ -5,14 +5,10 @@ import com.bonss.common.core.domain.PageQuery;
 import com.bonss.common.core.domain.entity.SysUser;
 import com.bonss.common.core.page.TableDataInfo;
 import com.bonss.system.domain.DTO.DeviceDetailDTO;
-import com.bonss.system.domain.Device;
 import com.bonss.system.param.ResetPasswordParam;
 import com.bonss.system.param.SmsCodeParam;
 import com.bonss.system.param.SmsCodeValidateParam;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 /**

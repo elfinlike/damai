@@ -29,6 +29,9 @@ public class ProductModel  {
     /** 型号编码*/
     private String modelCode;
 
+    /** 型号图片 */
+    private String modelImg;
+
     /** 状态：0=禁用，1=启用 */
     private Integer status;
 

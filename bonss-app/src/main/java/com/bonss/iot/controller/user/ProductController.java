@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/system/product")
+@RequestMapping("/app/product")
 public class ProductController {
 
     @Autowired
@@ -25,15 +25,16 @@ public class ProductController {
      * 分页查询产品
      */
     @GetMapping("/list")
-    public TableDataInfo listProducts(PageQuery query, Product product) {
-        return productService.getList(query, product);
+    @Log(title = "查询产品列表",businessType = BusinessType.GET,operatorType = OperatorType.MANAGE)
+    public TableDataInfo listProducts(PageQuery query, Product product){
+        return productService.getList(query,product);
     }
 
     /**
      * 新增产品
      */
     @PostMapping
-    @Log(title = "新增产品", businessType = BusinessType.INSERT, operatorType = OperatorType.MANAGE)
+    @Log(title = "新增产品",businessType = BusinessType.INSERT,operatorType = OperatorType.MANAGE)
     public AjaxResult add(@RequestBody Product product) {
         productService.addProduct(product);
         return AjaxResult.success();
@@ -43,17 +44,17 @@ public class ProductController {
      * 修改产品
      */
     @PutMapping
-    @Log(title = "修改产品", businessType = BusinessType.UPDATE, operatorType = OperatorType.MANAGE)
+    @Log(title = "修改产品",businessType = BusinessType.UPDATE,operatorType = OperatorType.MANAGE)
     public AjaxResult update(@RequestBody Product product) {
         productService.updateProduct(product);
         return AjaxResult.success();
     }
 
     /**
-     * 逻辑删除产品
+     *逻辑删除产品
      */
     @DeleteMapping("/{ids}")
-    @Log(title = "删除产品", businessType = BusinessType.DELETE, operatorType = OperatorType.MANAGE)
+    @Log(title = "删除产品",businessType = BusinessType.DELETE,operatorType = OperatorType.MANAGE)
     public AjaxResult delete(@PathVariable List<Long> ids) {
         productService.deleteProduct(ids);
         return AjaxResult.success();
@@ -63,6 +64,7 @@ public class ProductController {
      * 查看详情
      */
     @GetMapping("/{id}")
+    @Log(title = "查看产品详情",businessType = BusinessType.GET,operatorType = OperatorType.MANAGE)
     public AjaxResult detail(@PathVariable Long id) {
 
         return AjaxResult.success(productService.getDetail(id));

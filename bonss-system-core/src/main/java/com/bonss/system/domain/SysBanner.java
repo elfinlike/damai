@@ -40,16 +40,6 @@ public class SysBanner extends BaseEntity {
     private String imgName;
 
     /**
-     * 轮播图跳转直播ID
-     */
-    private Long liveId;
-    /**
-     * 轮播图跳转书籍ID
-     */
-
-    private Long bookId;
-
-    /**
      * 栏目排序优先级,值越大越靠前
      */
     private Integer sort;
@@ -59,16 +49,4 @@ public class SysBanner extends BaseEntity {
      */
     @TableLogic
     private String delFlag;
-
-    @TableField(exist = false)
-    private String liveTitle;
-
-    /**
-     * 轮播图类型 0代表直播小程序,1代表电子彩页
-     */
-    private String type;
-
-    @TableField(exist = false)
-    private String bookName;
-
 }

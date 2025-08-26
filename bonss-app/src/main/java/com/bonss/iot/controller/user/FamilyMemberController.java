@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/app/family/member")
-public class FamilyMemberController  extends BaseController {
+public class FamilyMemberController extends BaseController {
     @Autowired
     private IFamilyMemberService familyMemberService;
 
@@ -34,7 +34,6 @@ public class FamilyMemberController  extends BaseController {
      * 添加家庭成员(管理员)
      */
     @PostMapping("/add")
-    @Log(title = "添加家庭成员(管理员)", businessType = BusinessType.INSERT)
     public AjaxResult add(Long familyId, String phone) {
         boolean result = familyMemberService.addFamilyMember(familyId, phone);
         return result ? AjaxResult.success() : AjaxResult.error();
@@ -45,9 +44,8 @@ public class FamilyMemberController  extends BaseController {
      * 移除家庭成员(管理员)
      */
     @DeleteMapping("/remove")
-    @Log(title = "移除家庭成员(管理员)", businessType = BusinessType.DELETE)
-    public AjaxResult remove(Long userId,Long familyId) {
-        boolean result = familyMemberService.removeFamilyMember(userId,familyId);
+    public AjaxResult remove(Long userId, Long familyId) {
+        boolean result = familyMemberService.removeFamilyMember(userId, familyId);
         return result ? AjaxResult.success() : AjaxResult.error();
     }
 
@@ -65,7 +63,7 @@ public class FamilyMemberController  extends BaseController {
      */
     @PostMapping("/invite")
     @Log(title = "邀请成员加入家庭", businessType = BusinessType.INSERT)
-    public AjaxResult invite(Long familyId,String phone) {
+    public AjaxResult invite(Long familyId, String phone) {
         boolean result = familyMemberService.inviteFamilyMember(familyId, phone);
         return result ? AjaxResult.success() : AjaxResult.error();
     }
@@ -85,8 +83,8 @@ public class FamilyMemberController  extends BaseController {
      */
     @PostMapping("/approve")
     @Log(title = "管理员审批成员加入家庭", businessType = BusinessType.UPDATE)
-    public AjaxResult approve(Long familyId, Long userId, Integer status,String  reason) {
-        boolean result = familyMemberService.approveFamilyMember(familyId, userId, status,reason);
+    public AjaxResult approve(Long familyId, Long userId, Integer status, String reason) {
+        boolean result = familyMemberService.approveFamilyMember(familyId, userId, status, reason);
         return result ? AjaxResult.success() : AjaxResult.error();
     }
 

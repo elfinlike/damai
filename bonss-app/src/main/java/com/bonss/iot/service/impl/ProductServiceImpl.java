@@ -46,8 +46,6 @@ public class ProductServiceImpl implements IProductService {
                 .eq(product.getCategoryId()!=null,Product::getCategoryId,product.getCategoryId())
                 .eq(Product::getDelFlag,"0");
         Page<Product> productPage = sysProductMapper.selectPage(page, wrapper);
-        SysOperLog sysOperLog=new SysOperLog();
-        sysOperLog.setTitle("产品模块");
         return new TableDataInfo(productPage.getRecords(), productPage.getTotal());
     }
 
@@ -71,8 +69,8 @@ public class ProductServiceImpl implements IProductService {
         }
 
         product.setDelFlag("0");
-        product.setUpdateBy(SecurityUtils.getUsername());
-        product.setCreateBy(SecurityUtils.getUsername());
+        product.setUpdateBy(SecurityUtils.getAdminUserName());
+        product.setCreateBy(SecurityUtils.getAdminUserName());
         int insert = sysProductMapper.insert(product);
         if (insert<=0){
             log.error("添加失败");
@@ -102,7 +100,7 @@ public class ProductServiceImpl implements IProductService {
             }
         }
 
-        product.setUpdateBy(SecurityUtils.getUsername());
+        product.setUpdateBy(SecurityUtils.getAdminUserName());
         //然后进行插入
         int update = sysProductMapper.updateById(product);
         if (update<=0){

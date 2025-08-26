@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bonss.common.core.domain.entity.SysUser;
+import com.bonss.common.core.page.TableDataInfo;
 import com.bonss.common.enums.*;
 import com.bonss.common.exception.ServiceException;
 import com.bonss.common.utils.SecurityUtils;
@@ -18,6 +19,9 @@ import com.bonss.iot.service.IFamilyService;
 import com.bonss.iot.mapper.FamilyMapper;
 import com.bonss.iot.mapper.FamilyMemberMapper;
 import com.bonss.iot.util.QRCodeUtil;
+import com.bonss.system.domain.DTO.DeviceDetailDTO;
+import com.bonss.system.domain.Device;
+import com.bonss.system.mapper.DeviceMapper;
 import com.bonss.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +41,8 @@ public class FamilyServiceImpl extends ServiceImpl<FamilyMapper, Family> impleme
     @Autowired
     private EventBusService eventBusService;
 
+    @Autowired
+    private DeviceMapper deviceMapper;
     private final SysUserMapper sysUserMapper;
 
     public FamilyServiceImpl(SysUserMapper sysUserMapper) {
@@ -91,7 +97,7 @@ public class FamilyServiceImpl extends ServiceImpl<FamilyMapper, Family> impleme
     @Override
     @Transactional
     public boolean dismissFamily(Long familyId) {
-        Long userId = SecurityUtils.getAdminUserId();
+        Long userId = SecurityUtils.getUserId();
         //是否是该家庭管理员
         LambdaQueryWrapper<FamilyMember> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(FamilyMember::getFamilyId, familyId);
@@ -163,5 +169,4 @@ public class FamilyServiceImpl extends ServiceImpl<FamilyMapper, Family> impleme
         }
         return Collections.emptyList();
     }
-
 }

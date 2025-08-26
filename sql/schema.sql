@@ -362,3 +362,73 @@ create table bonss_ventilator.sys_user_role
     primary key (user_id, role_id)
 ) comment '用户和角色关联表';
 
+
+-- ----------------------------
+-- Table structure for sys_column
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_column`;
+CREATE TABLE `sys_column`
+(
+    `column_id`   bigint                                                        NOT NULL COMMENT '栏目唯一id',
+    `column_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '栏目名称',
+    `icon_url`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT ' 栏目图标访问url',
+    `column_sort` int NULL DEFAULT 0 COMMENT '排序字段',
+    `del_flag`    char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+    `create_by`   varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NOT NULL DEFAULT '' COMMENT '栏目创建人',
+    `create_time` datetime                                                      NOT NULL COMMENT '栏目创建时间',
+    `update_by`   varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '栏目修改人',
+    `update_time` datetime NULL DEFAULT NULL COMMENT '栏目修改时间',
+    `remark`      varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '备注',
+    PRIMARY KEY (`column_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '栏目表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for sys_column_module
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_column_module`;
+CREATE TABLE `sys_column_module`
+(
+    `id`        bigint NOT NULL COMMENT ' 主键ID',
+    `column_id` bigint NULL DEFAULT NULL COMMENT ' 栏目ID',
+    `module_id` bigint NULL DEFAULT NULL COMMENT ' 活动ID',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '栏目活动映射表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for sys_module
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_module`;
+CREATE TABLE `sys_module`
+(
+    `module_id`   bigint                                                        NOT NULL COMMENT '模块ID',
+    `url`         varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '模块标题图片url',
+    `module_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'moduleName',
+    `sort`        int NULL DEFAULT 0 COMMENT '轮播图排序 值越大 越靠前',
+    `del_flag`    char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标记 0 表示正常 2表示删除',
+    `create_by`   varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+    `update_by`   varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '修改人',
+    `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+    `remark`      varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注信息',
+    PRIMARY KEY (`module_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '轮播图表' ROW_FORMAT = Dynamic;
+
+
+-- ----------------------------
+-- Table structure for sys_banner
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_banner`;
+CREATE TABLE `sys_banner`  (
+                               `banner_id` bigint NOT NULL COMMENT '轮播图id',
+                               `img_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '轮播图访问url',
+                               `img_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '轮播图名称',
+                               `live_id` bigint NULL DEFAULT NULL COMMENT '轮播图跳转的直播id',
+                               `sort` int NULL DEFAULT 0 COMMENT '轮播图排序 值越大 越靠前',
+                               `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标记 0 表示正常 2表示删除',
+                               `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
+                               `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                               `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '修改人',
+                               `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                               `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注信息',
+                               PRIMARY KEY (`banner_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '轮播图表' ROW_FORMAT = Dynamic;

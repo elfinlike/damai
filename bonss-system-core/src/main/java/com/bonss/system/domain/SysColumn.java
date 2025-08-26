@@ -47,14 +47,4 @@ public class SysColumn extends BaseEntity {
      * icon访问url
      */
     private String iconUrl;
-
-    /**
-     * 产品线形象图
-     */
-    private String productImgUrl;
-
-    /**
-     * 是否为云视频栏
-     */
-    private String videoFlag;
 }

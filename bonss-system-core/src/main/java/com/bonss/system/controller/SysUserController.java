@@ -12,8 +12,6 @@ import com.bonss.common.utils.SecurityUtils;
 import com.bonss.common.utils.StringUtils;
 import com.bonss.common.utils.poi.ExcelUtil;
 import com.bonss.system.domain.DTO.DeviceDetailDTO;
-import com.bonss.system.domain.Device;
-import com.bonss.system.domain.vo.DeviceDetailVO;
 import com.bonss.system.service.ISysRoleService;
 import com.bonss.system.service.ISysUserService;
 import org.apache.commons.lang3.ArrayUtils;
@@ -192,7 +190,7 @@ public class SysUserController extends BaseController {
      */
     @GetMapping("/{userId}/devices")
     public TableDataInfo getUserDevices(
-            @PathVariable Long userId, PageQuery pageQuery, DeviceDetailDTO deviceDetailDTO) {
+            @PathVariable Long userId,   PageQuery pageQuery,   DeviceDetailDTO deviceDetailDTO) {
 
         return userService.getUserDevices(userId, pageQuery, deviceDetailDTO);
     }

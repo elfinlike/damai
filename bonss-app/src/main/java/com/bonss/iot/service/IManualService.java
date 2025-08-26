@@ -10,7 +10,8 @@ import java.util.List;
 public interface IManualService {
     void addManuals(Integer productId, List<MultipartFile> multipartFiles,String prefix);
 
-    TableDataInfo listPage(Integer productId, PageQuery query, Manual manual);
 
     void deleteManuals(Integer productId, List<Long> ids,String profileName);
+
+    TableDataInfo listPage(Integer productId, PageQuery query);
 }

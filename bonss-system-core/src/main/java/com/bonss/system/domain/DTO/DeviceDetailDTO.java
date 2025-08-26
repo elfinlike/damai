@@ -17,4 +17,6 @@ public class DeviceDetailDTO {
     private String deviceName;
     //所属产品Id
     private Long productId;
+    //家庭id
+    private Long familyId;
 }

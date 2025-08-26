@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/system/model")
+@RequestMapping("/app/model")
 @Slf4j
 public class ModelController {
 
@@ -43,6 +43,7 @@ public class ModelController {
      * @return 型号信息
      */
     @GetMapping("/{modelId}")
+    @Log(title = " 查看型号详情",businessType = BusinessType.GET,operatorType = OperatorType.MANAGE)
     public AjaxResult getDetail(@PathVariable Long modelId){
         return AjaxResult.success(modelService.getDetail(modelId));
     }
@@ -51,6 +52,7 @@ public class ModelController {
      * 分页查询
      */
     @GetMapping("/list")
+    @Log(title = "分页查询型号",businessType = BusinessType.GET,operatorType = OperatorType.MANAGE)
     public TableDataInfo listModels(PageQuery pageQuery,ProductModel productModel){
         return modelService.listModels(pageQuery,productModel);
     }
@@ -75,6 +77,7 @@ public class ModelController {
     @DeleteMapping("/{ids}")
     @Log(title = "删除产品型号",businessType = BusinessType.DELETE,operatorType = OperatorType.MANAGE)
     public AjaxResult deleteModels(@PathVariable List<Long> ids){
+
         modelService.deleteModels(ids);
         return AjaxResult.success();
     }

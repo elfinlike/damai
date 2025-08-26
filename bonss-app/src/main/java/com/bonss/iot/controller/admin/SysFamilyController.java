@@ -7,6 +7,8 @@ import com.bonss.iot.domain.Family;
 import com.bonss.iot.domain.FamilyMember;
 import com.bonss.iot.domain.vo.FamilyTableVO;
 import com.bonss.iot.service.IFamilyService;
+import com.bonss.system.domain.DTO.DeviceDetailDTO;
+import com.bonss.system.domain.Device;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

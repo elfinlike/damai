@@ -1,14 +1,15 @@
 package com.bonss.iot.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bonss.common.annotation.Log;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bonss.common.core.domain.PageQuery;
 import com.bonss.common.core.domain.entity.SysUser;
 import com.bonss.common.core.page.TableDataInfo;
+import com.bonss.common.enums.FamilyStatus;
 import com.bonss.common.exception.ServiceException;
-import com.bonss.common.web.domain.server.Sys;
+import com.bonss.iot.domain.FamilyMember;
+import com.bonss.iot.mapper.FamilyMemberMapper;
 import com.bonss.system.domain.*;
 import com.bonss.system.domain.DTO.DeviceDetailDTO;
 import com.bonss.system.domain.vo.DeviceConsumableVO;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class DeviceServiceImpl implements IDeviceService {
+public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> implements IDeviceService {
 
     @Autowired
     private DeviceMapper deviceMapper;
@@ -47,6 +48,9 @@ public class DeviceServiceImpl implements IDeviceService {
     private SysProductMapper sysProductMapper;
 
     @Autowired
+    private FamilyMemberMapper familyMemberMapper;
+
+    @Autowired
     private SysUserMapper sysUserMapper;
 
     /**
@@ -60,11 +64,13 @@ public class DeviceServiceImpl implements IDeviceService {
     public TableDataInfo listDevices(PageQuery pageQuery, DeviceDetailDTO deviceDetailDTO) {
         // 构建设备查询条件
         LambdaQueryWrapper<Device> deviceWrapper = new LambdaQueryWrapper<>();
-        deviceWrapper.like(deviceDetailDTO.getDeviceName() != null, Device::getName, deviceDetailDTO.getDeviceName())
-                .eq(deviceDetailDTO.getUserId() != null, Device::getUserId, deviceDetailDTO.getUserId())
-                .eq(deviceDetailDTO.getDeviceId() != null, Device::getId, deviceDetailDTO.getDeviceId())
-                .eq(Device::getDelFlag, "0");
-
+        deviceWrapper.like(deviceDetailDTO.getDeviceName() != null, Device::getName, deviceDetailDTO.getDeviceName()).eq(deviceDetailDTO.getUserId() != null, Device::getUserId, deviceDetailDTO.getUserId()).eq(deviceDetailDTO.getDeviceId() != null, Device::getId, deviceDetailDTO.getDeviceId()).eq(Device::getDelFlag, "0");
+        if (deviceDetailDTO.getFamilyId() != null) {
+            List<FamilyMember> members = familyMemberMapper.selectList(new LambdaQueryWrapper<FamilyMember>().eq(FamilyMember::getFamilyId, deviceDetailDTO.getFamilyId()).eq(FamilyMember::getStatus, FamilyStatus.APPROVED.getCode()));
+            if (!CollectionUtils.isEmpty(members)) {
+                deviceWrapper.in(Device::getUserId, members.stream().map(FamilyMember::getUserId).collect(Collectors.toList()));
+            }
+        }
         // 如果指定了productId，需要筛选对应modelId
         if (deviceDetailDTO.getProductId() != null) {
             LambdaQueryWrapper<ProductModel> modelWrapper = new LambdaQueryWrapper<>();
@@ -89,9 +95,7 @@ public class DeviceServiceImpl implements IDeviceService {
 
         // 转换为VO对象
         SysUser finalSpecifiedUser = specifiedUser;
-        List<DeviceDetailVO> deviceDetailVOS = devicePages.getRecords().stream()
-                .map(record -> convertToDeviceDetailVO(record, finalSpecifiedUser, deviceDetailDTO.getProductId()))
-                .collect(Collectors.toList());
+        List<DeviceDetailVO> deviceDetailVOS = devicePages.getRecords().stream().map(record -> convertToDeviceDetailVO(record, finalSpecifiedUser, deviceDetailDTO.getProductId())).collect(Collectors.toList());
 
         return new TableDataInfo(deviceDetailVOS, devicePages.getTotal());
     }
@@ -126,12 +130,14 @@ public class DeviceServiceImpl implements IDeviceService {
         // 设置产品信息
         if (productId != null) {
             Product product = sysProductMapper.selectById(productId);
+            deviceDetailVO.setProductId(productId);
             deviceDetailVO.setProductCode(product.getProductCode());
             deviceDetailVO.setProductName(product.getName());
         } else {
             Product product = sysProductMapper.selectById(productModel.getProductId());
             deviceDetailVO.setProductCode(product.getProductCode());
             deviceDetailVO.setProductName(product.getName());
+            deviceDetailVO.setProductId(product.getId());
         }
 
         return deviceDetailVO;
@@ -209,7 +215,7 @@ public class DeviceServiceImpl implements IDeviceService {
      * @return 设备详情
      */
     @Override
-    public Device getDeviceDetail(Long id, Device device) {
+    public Device getDeviceDetail(Long id) {
         LambdaQueryWrapper<Device> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Device::getId, id);
         Device deviceOne = deviceMapper.selectOne(wrapper);
@@ -218,5 +224,10 @@ public class DeviceServiceImpl implements IDeviceService {
             throw new ServiceException("设备不存在");
         }
         return deviceOne;
+    }
+
+    @Override
+    public List<Device> listDevicesByUserId(Long userId) {
+        return deviceMapper.selectList(new LambdaQueryWrapper<Device>().eq(Device::getUserId, userId));
     }
 }
